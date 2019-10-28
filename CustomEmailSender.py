@@ -15,7 +15,6 @@ class MyFrame(wx.Frame):
         my_sizer.Add(emails_header_st, 0, wx.ALIGN_LEFT)
         self.emails_tc = wx.TextCtrl(panel)
         my_sizer.Add(self.emails_tc, 0, wx.ALL | wx.EXPAND, 5)
-
         template_name_st = wx.StaticText(panel, label="Template File name")
         my_sizer.Add(template_name_st, 0, wx.ALL | wx.EXPAND, 5)
         self.template_name_tc = wx.TextCtrl(panel)
@@ -40,7 +39,11 @@ class MyFrame(wx.Frame):
         PASSWORD = 'Iusethisforpython'
         # email = self.text_ctrl.GetValue()
         name = "Babak"
-        message_template = read_template('email-template.html')
+        message_template = read_template(self.template_name_tc.GetValue())
+        if not message_template:
+            message_template = read_template('email-template.html')
+
+
 
         s = smtplib.SMTP(host='smtp.gmail.com', port=587)
         s.starttls()
