@@ -1,8 +1,9 @@
-import wx
 import smtplib
-from string import Template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from string import Template
+
+import wx
 
 
 class MyFrame(wx.Frame):
@@ -10,16 +11,24 @@ class MyFrame(wx.Frame):
         super().__init__(parent=None, title='Hello')
         panel = wx.Panel(self)
         my_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.text_ctrl = wx.TextCtrl(panel, pos=(5, 5))
-        my_sizer.Add(self.text_ctrl, 0, wx.ALL | wx.EXPAND, 5)
-        my_btn = wx.Button(panel, label='Send Email')
-        my_btn.Bind(wx.EVT_BUTTON, self.on_press)
-        my_sizer.Add(my_btn, 0, wx.ALL | wx.CENTER, 5)
+        emails_header_st = wx.StaticText(panel, label="Email List")
+        my_sizer.Add(emails_header_st, 0, wx.ALIGN_LEFT)
+        self.emails_tc = wx.TextCtrl(panel)
+        my_sizer.Add(self.emails_tc, 0, wx.ALL | wx.EXPAND, 5)
+
+        template_name_st = wx.StaticText(panel, label="Template File name")
+        my_sizer.Add(template_name_st, 0, wx.ALL | wx.EXPAND, 5)
+        self.template_name_tc = wx.TextCtrl(panel)
+        my_sizer.Add(self.template_name_tc, 0, wx.ALL | wx.EXPAND, 5)
+        send_emails_btn = wx.Button(panel, label='Send Email')
+        send_emails_btn.Bind(wx.EVT_BUTTON, self.on_press)
+        my_sizer.Add(send_emails_btn, 0, wx.ALL | wx.CENTER, 5)
+
         panel.SetSizer(my_sizer)
         self.Show()
 
     def on_press(self, event):
-        value = self.text_ctrl.GetValue()
+        value = self.emails_tc.GetValue()
         for email in value.split():
             self.send_email(email)
         if not value:
